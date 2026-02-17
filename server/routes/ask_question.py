@@ -9,7 +9,7 @@ from langchain.schema import BaseRetriever
 
 from pinecone import Pinecone
 from pydantic import Field
-from typing import List, Optional
+from typing import List
 from logger import logger
 import os
 
@@ -18,6 +18,7 @@ from google import genai
 from google.genai import types
 
 router = APIRouter()
+
 
 def embed_query_768(query: str, api_key: str) -> List[float]:
     """
@@ -34,6 +35,7 @@ def embed_query_768(query: str, api_key: str) -> List[float]:
         ),
     )
     return resp.embeddings[0].values
+
 
 @router.post("/ask/")
 async def ask_question(question: str = Form(...)):
@@ -60,29 +62,24 @@ async def ask_question(question: str = Form(...)):
         res = index.query(vector=embedded_query, top_k=3, include_metadata=True)
 
         # Convert matches -> LangChain Documents
-        docs = []
+        docs: List[Document] = []
         for match in res.get("matches", []):
             md = match.get("metadata", {}) or {}
             docs.append(
                 Document(
-                    page_content=md.get("text", ""),  # We store "text" during upload
+                    page_content=md.get("text", ""),  # stored during upload
                     metadata=md
                 )
             )
 
-        # Simple retriever that returns the already-retrieved docs
+        # ✅ FIXED retriever (Pydantic-safe)
         class SimpleRetriever(BaseRetriever):
-            tags: Optional[List[str]] = Field(default_factory=list)
-            metadata: Optional[dict] = Field(default_factory=dict)
-
-            def __init__(self, documents: List[Document]):
-                super().__init__()
-                self._docs = documents
+            docs: List[Document] = Field(default_factory=list)
 
             def _get_relevant_documents(self, query: str) -> List[Document]:
-                return self._docs
+                return self.docs
 
-        retriever = SimpleRetriever(docs)
+        retriever = SimpleRetriever(docs=docs)
 
         # Your LLM chain
         chain = get_llm_chain(retriever)
