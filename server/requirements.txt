@@ -7,7 +7,7 @@ python-multipart  # for file uploads
 langchain==0.2.16
 langchain-community==0.2.16
 langchain-core==0.2.38
-langchain-groq
+langchain-groq==0.1.6
 
 # Vectorstore
 # chromadb
@@ -16,7 +16,8 @@ pinecone
 # Embeddings
 # sentence-transformers
 # langchain-google-generative-ai
-langchain-google-genai
+google-genai>=1.50.0
+langchain-google-genai>=1.0.10
 
 # PDF Parsing
 PyPDF  # backend for PyPDFLoader via langchain_community
