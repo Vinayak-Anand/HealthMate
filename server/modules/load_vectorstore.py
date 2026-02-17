@@ -41,7 +41,7 @@ index = pc.Index(PINECONE_INDEX_NAME)
 
 # Function to load, split, embed, and upload documents
 def load_vectorstore(uploaded_files):
-    embed_model = GoogleGenerativeAIEmbeddings(model="models/embedding-004")
+    embed_model = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
     file_paths = []
 
     # 1. Save uploaded files
