@@ -30,7 +30,7 @@ existing_indexes = [i["name"] for i in pc.list_indexes()]
 if PINECONE_INDEX_NAME not in existing_indexes:
     pc.create_index(
         name=PINECONE_INDEX_NAME,
-        dimension=768,
+        dimension=3072,
         metric="dotproduct",
         spec=spec
     )
@@ -44,7 +44,7 @@ def load_vectorstore(uploaded_files):
     embed_model = GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
         google_api_key=GOOGLE_API_KEY,
-        output_dimensionality=768,
+        output_dimensionality=3072,
     )
     file_paths = []
 

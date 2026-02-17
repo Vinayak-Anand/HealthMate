@@ -24,7 +24,7 @@ async def ask_question(question: str = Form(...)):
         embed_model = GoogleGenerativeAIEmbeddings(
             model="models/gemini-embedding-001",
             google_api_key=os.getenv("GOOGLE_API_KEY"),
-            output_dimensionality=768,
+            output_dimensionality=3072,
         )
         embedded_query = embed_model.embed_query(question)
         res = index.query(vector=embedded_query, top_k=3, include_metadata=True)
