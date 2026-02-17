@@ -42,7 +42,7 @@ index = pc.Index(PINECONE_INDEX_NAME)
 # Function to load, split, embed, and upload documents
 def load_vectorstore(uploaded_files):
     embed_model = GoogleGenerativeAIEmbeddings(
-        model="gemini-embedding-001",
+        model="models/gemini-embedding-001",
         google_api_key=GOOGLE_API_KEY,
         output_dimensionality=768,
     )

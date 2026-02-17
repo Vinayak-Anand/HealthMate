@@ -22,7 +22,7 @@ async def ask_question(question: str = Form(...)):
         pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
         index = pc.Index(os.environ["PINECONE_INDEX_NAME"])
         embed_model = GoogleGenerativeAIEmbeddings(
-            model="gemini-embedding-001",
+            model="models/gemini-embedding-001",
             google_api_key=os.getenv("GOOGLE_API_KEY"),
             output_dimensionality=768,
         )
